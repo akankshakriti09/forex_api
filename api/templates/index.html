@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forex Analysis GUI</title>
+    <!-- Add any CSS or JavaScript files here if needed -->
+</head>
+<body>
+    <h1>Forex Analysis App</h1>
+    <label for="symbol">Symbol:</label>
+    <input type="text" id="symbol" name="symbol">
+    <button id="analyze_button">Analyze</button>
+    <div id="result"></div>
+
+    <!-- Add any JavaScript code here -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#analyze_button').click(function() {
+                var symbol = $('#symbol').val();
+                $.ajax({
+                    url: '/api/analyze-symbol/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {'symbol': symbol},
+                    success: function(data) {
+                        // Display analysis results
+                        $('#result').html('<h2>Analysis Results</h2>');
+                        $('#result').append('<p>Symbol: ' + data.symbol + '</p>');
+                        $('#result').append('<p>Stop Loss Price: ' + data.sl_price + '</p>');
+                        $('#result').append('<p>Take Profit Price: ' + data.tp_price + '</p>');
+                        // Add more elements to display other analysis data if needed
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
